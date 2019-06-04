@@ -1,6 +1,6 @@
 <?php
 
-    //VF Cash PHP API v0.01
+    //VF Cash PHP API v0.02
 
     //Before you can use this basic API you need to be running a local full-node and have UDP port 58008 forwarded on your router
 
@@ -28,7 +28,7 @@
     //Get circulating supply
     function circulatingSupply()
     {
-        $na = shell_exec('/usr/bin/coin out ' . escapeshellarg("b7DxbqLS8UM1d6NBuhLreZKsnj86oQC3U1ssWFNtx2U6sxB32CyTWUAh4LMdw5d2gN"));
+        $na = shell_exec('/usr/bin/coin out ' . escapeshellarg("foxXshGUtLFD24G9pz48hRh3LWM58GXPYiRhNHUyZAPJ"));
 
         $p = explode("\n", $na);
         $sp = 0;
