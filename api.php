@@ -1,6 +1,6 @@
 <?php
 
-    //VF Cash PHP API v0.02
+    //VF Cash PHP API v0.03
 
     //Before you can use this basic API you need to be running a local full-node and have UDP port 58008 forwarded on your router
 
@@ -8,8 +8,8 @@
     function getBalance($public_key)
     {
         $na = shell_exec('/usr/bin/coin ' . escapeshellarg($public_key));
-        $p = strstr($na, "is ");
-        $p = str_replace('is ', '', $p);
+        $p = strstr($na, "Final Balance:[0m ");
+        $p = str_replace("Final Balance:[0m ", "", $p);
         return explode(" ", $p, 2)[0];
     }
 
