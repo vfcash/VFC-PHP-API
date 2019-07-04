@@ -2,7 +2,7 @@
 
     //VF Cash PHP API v0.04
 
-    //Before you can use this basic API you need to be running a local full-node and have UDP port 58008 forwarded on your router
+    //Before you can use this basic API you need to be running a local instance of the VFC node
 
     //get the balance of a public key / address
     function getBalance($public_key)
