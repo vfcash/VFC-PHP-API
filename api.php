@@ -14,7 +14,7 @@
     }
 
     //Get public key from private key
-    function getPub($private_key)
+    function getPublicKey($private_key)
     {
         $na = shell_exec('/usr/bin/coin getpub ' . escapeshellarg($private_key));
         $p = strstr($na, "Public: ");
