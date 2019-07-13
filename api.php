@@ -80,7 +80,7 @@
                 continue;
 
             $a = explode(' > ', $pc, 2);
-            echo '<b>' . $a[0] . '</b> &gt; ' . number_format($a[1]) . '<br>';
+            echo '<b>' . $a[0] . '</b> &gt; ' . number_format($a[1], 3) . '<br>';
         }
     }
 
@@ -96,7 +96,7 @@
                 continue;
 
             $a = explode(' > ', $pc, 2);
-            echo '<b>' . $a[0] . '</b> &gt; ' . number_format($a[1]) . '<br>';
+            echo '<b>' . $a[0] . '</b> &gt; ' . number_format($a[1], 3) . '<br>';
         }
     }
 
