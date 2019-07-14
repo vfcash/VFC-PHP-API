@@ -7,7 +7,7 @@
     //get the balance of a public key / address
     function getBalance($public_key)
     {
-        $na = shell_exec('/usr/bin/coin ' . escapeshellarg($public_key));
+        $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
         $p = strstr($na, "Final Balance:[0m ");
         $p = str_replace("Final Balance:[0m ", "", $p);
         return explode(" ", $p, 2)[0];
@@ -16,7 +16,7 @@
     //Get public key from private key
     function getPublicKey($private_key)
     {
-        $na = shell_exec('/usr/bin/coin getpub ' . escapeshellarg($private_key));
+        $na = shell_exec('/usr/bin/vfc getpub ' . escapeshellarg($private_key));
         $p = strstr($na, "Public: ");
         $p = str_replace("Public: ", "", $p);
         return explode("\n", $p, 2)[0];
@@ -25,7 +25,7 @@
     //Make Transaction
     function makeTransaction($from_pub_key, $to_pub_key, $amount, $from_priv_key)
     {
-        shell_exec('/usr/bin/coin ' . escapeshellarg($from_pub_key) . ' ' . escapeshellarg($to_pub_key) . ' ' . escapeshellarg($amount) . ' ' . escapeshellarg($from_priv_key));
+        shell_exec('/usr/bin/vfc ' . escapeshellarg($from_pub_key) . ' ' . escapeshellarg($to_pub_key) . ' ' . escapeshellarg($amount) . ' ' . escapeshellarg($from_priv_key));
     }
 
     //Get maximum supply
@@ -37,7 +37,7 @@
     //Get circulating supply
     function circulatingSupply()
     {
-        $na = shell_exec('/usr/bin/coin out ' . escapeshellarg("foxXshGUtLFD24G9pz48hRh3LWM58GXPYiRhNHUyZAPJ"));
+        $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg("foxXshGUtLFD24G9pz48hRh3LWM58GXPYiRhNHUyZAPJ"));
 
         $p = explode("\n", $na);
         $sp = 0;
@@ -55,7 +55,7 @@
     //Print a fresh/new key pair
     function printKeyPair()
     {
-        $na = shell_exec('/usr/bin/coin new');
+        $na = shell_exec('/usr/bin/vfc new');
 
         $p = strstr($na, "Public: ");
         $p = str_replace('Public: ', '', $p);
@@ -71,7 +71,7 @@
     //Print Received Transactions for Public Key / Address
     function printIns($public_key)
     {
-        $na = shell_exec('/usr/bin/coin in ' . escapeshellarg($public_key));
+        $na = shell_exec('/usr/bin/vfc in ' . escapeshellarg($public_key));
 
         $p = explode("\n", $na);
         foreach($p as $pc)
@@ -87,7 +87,7 @@
     //Print Sent Transactions for Public Key / Address
     function printOuts($public_key)
     {
-        $na = shell_exec('/usr/bin/coin out ' . escapeshellarg($public_key));
+        $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg($public_key));
 
         $p = explode("\n", $na);
         foreach($p as $pc)
