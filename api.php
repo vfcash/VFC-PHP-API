@@ -1,6 +1,6 @@
 <?php
 
-    //VF Cash PHP API v0.04
+    //VF Cash PHP API v0.05
 
     //Before you can use this basic API you need to be running a local instance of the VFC node
 
@@ -8,8 +8,8 @@
     function getBalance($public_key)
     {
         $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
-        $p = strstr($na, "Final Balance:[0m ");
-        $p = str_replace("Final Balance:[0m ", "", $p);
+        $p = strstr($na, "Final Balance: ");
+        $p = str_replace("Final Balance: ", "", $p);
         return explode(" ", $p, 2)[0];
     }
 
