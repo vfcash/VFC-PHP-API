@@ -25,6 +25,14 @@
         exit;
     }
 
+    if(isset($_GET['difficulty']))
+    {
+        $_SESSION['lq'] = time(0)+3;
+        echo rtrim(shell_exec('/usr/bin/vfc difficulty'));
+        $_SESSION['lq'] = time(0)+3;
+        exit;
+    }
+
     if(isset($_GET['findtrans']))
     {
         $_SESSION['lq'] = time(0)+16;
