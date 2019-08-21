@@ -33,6 +33,15 @@
         $_SESSION['lq'] = time(0)+16;
         exit;
     }
+    if(isset($_GET['findtransjson']))
+    {
+        $_SESSION['lq'] = time(0)+16;
+        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg($_GET['findtrans']));
+        $p = explode(',', $na);
+        echo '{"offset":'.$p[0].',"uid":'.$p[1].',"from":"'.$p[2].'","to":"'.$p[3].'","sig":"'.$p[4].'","amount":'.rtrim($p[5]).'}';
+        $_SESSION['lq'] = time(0)+16;
+        exit;
+    }
 
     //Print Received Transactions for Public Key / Address
     if(isset($_GET['sent_transactions']))
