@@ -172,6 +172,27 @@
         exit;
     }
 
+    //new keypair from mnemonic
+    if(isset($_GET['mnemonic']))
+    {
+        $_SESSION['lq'] = time(0)+3;
+        $na = shell_exec('/usr/bin/vfc new ' . escapeshellarg(urldecode($_GET['mnemonic'])));
+        $p = strstr($na, "Public: ");
+        $p = str_replace('Public: ', '', $p);
+        $public = explode("\n", $p, 2)[0];
+        $p = strstr($na, "Private: ");
+        $p = str_replace('Private: ', '', $p);
+        $private = explode("\n", $p, 2)[0];
+        if($private == "")
+        {
+            echo $na;
+            exit;
+        }
+        echo '{"pub":"' . $public . '","priv":"' . $private . '"}';
+        $_SESSION['lq'] = time(0)+3;
+        exit;
+    }
+
     //Print a fresh/new key pair
     if(isset($_GET['newkeypair']))
     {
