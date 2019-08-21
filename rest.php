@@ -114,8 +114,16 @@
         $_SESSION['lq'] = time(0)+3;
         exit;
     }
-
-    //Get height
+    if(isset($_GET['heighb']))
+    {
+        $_SESSION['lq'] = time(0)+3;
+        $na = shell_exec('/usr/bin/vfc heigh');
+        $p = strstr($na, "/ ");
+        $p = str_replace('/ ', '', $p);
+        echo (explode(" ", $p, 2)[0] * 144);
+        $_SESSION['lq'] = time(0)+3;
+        exit;
+    }
     if(isset($_GET['heighkb']))
     {
         $_SESSION['lq'] = time(0)+3;
@@ -123,6 +131,16 @@
         $p = strstr($na, "/ ");
         $p = str_replace('/ ', '', $p);
         echo (explode(" ", $p, 2)[0] * 144) / 1000;
+        $_SESSION['lq'] = time(0)+3;
+        exit;
+    }
+    if(isset($_GET['heighmb']))
+    {
+        $_SESSION['lq'] = time(0)+3;
+        $na = shell_exec('/usr/bin/vfc heigh');
+        $p = strstr($na, "/ ");
+        $p = str_replace('/ ', '', $p);
+        echo ((explode(" ", $p, 2)[0] * 144) / 1000) / 1000;
         $_SESSION['lq'] = time(0)+3;
         exit;
     }
