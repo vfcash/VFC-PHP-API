@@ -25,6 +25,15 @@
         exit;
     }
 
+    if(isset($_GET['findtrans']))
+    {
+        $_SESSION['lq'] = time(0)+16;
+        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg($_GET['findtrans']));
+        echo $na;
+        $_SESSION['lq'] = time(0)+16;
+        exit;
+    }
+
     //Print Received Transactions for Public Key / Address
     if(isset($_GET['sent_transactions']))
     {
