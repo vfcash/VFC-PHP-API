@@ -179,4 +179,16 @@
         exit;
     }
 
+    //Print a fresh/new key pair
+    if(isset($_GET['newpriv']))
+    {
+        $_SESSION['lq'] = time(0)+3;
+        $na = shell_exec('/usr/bin/vfc new');
+        $p = strstr($na, "Private: ");
+        $p = str_replace('Private: ', '', $p);
+        echo explode("\n", $p, 2)[0];
+        $_SESSION['lq'] = time(0)+3;
+        exit;
+    }
+
 ?>
