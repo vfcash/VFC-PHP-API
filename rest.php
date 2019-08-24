@@ -28,7 +28,7 @@
     if(isset($_GET['difficulty']))
     {
         $_SESSION['lq'] = time(0)+3;
-        echo rtrim(shell_exec('/usr/bin/vfc difficulty'));
+        echo str_replace("Difficulty: ", "", strstr(rtrim(shell_exec('/usr/bin/vfc difficulty')), "Difficulty: "));
         $_SESSION['lq'] = time(0)+3;
         exit;
     }
