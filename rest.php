@@ -117,6 +117,13 @@
     }
 
     //Make Transaction
+    if(isset($_GET['fromprivfast']))
+    {
+        exec('nohup /usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['fromprivfast']) . ' > /dev/null 2>&1 &');
+        exit;
+    }
+
+    //Make Transaction
     if(isset($_GET['frompriv']))
     {
         $_SESSION['lq'] = time(0)+3;
