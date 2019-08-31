@@ -116,7 +116,7 @@
         exit;
     }
 
-    //Make Transaction
+    //Make Transaction Fast
     if(isset($_GET['fromprivfast']))
     {
         exec('nohup /usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['fromprivfast']) . ' > /dev/null 2>&1 &');
