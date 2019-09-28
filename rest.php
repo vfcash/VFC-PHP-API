@@ -25,6 +25,15 @@
         exit;
     }
 
+    //Get all transactions for an address
+    if(isset($_GET['all']))
+    {
+        $_SESSION['lq'] = time(0)+16;
+        echo '<pre>'.rtrim(shell_exec('/usr/bin/vfc all ' . escapeshellarg($_GET['all'])));
+        $_SESSION['lq'] = time(0)+16;
+        exit;
+    }
+
     if(isset($_GET['difficulty']))
     {
         $_SESSION['lq'] = time(0)+3;
