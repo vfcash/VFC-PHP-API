@@ -125,6 +125,17 @@
         exit;
     }
 
+    //Receive raw packet data encoded in base64, for receiving securely signed transactions
+    if(isset($_GET['sendraw']))
+    {
+        $_SESSION['lq'] = time(0)+1;
+        $packet = base64_decode($_GET['sendraw']);
+        if($socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
+            socket_sendto($socket, $packet, strlen($packet), 0, "127.0.0.1", 8787);
+        $_SESSION['lq'] = time(0)+1;
+        exit;
+    }
+
     //Make Transaction
     if(isset($_GET['frompriv']))
     {
