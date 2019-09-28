@@ -141,10 +141,7 @@
     {
         $_SESSION['lq'] = time(0)+3;
         $frompub = getPublicKey($_GET['frompriv']);
-        $b0 = getBalance($frompub);
-        shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['frompriv']));
-        $b1 = getBalance($frompub);
-        echo number_format($b0-$b1, 3, '.', '');
+        echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['frompriv']));
         $_SESSION['lq'] = time(0)+3;
         exit;
     }
