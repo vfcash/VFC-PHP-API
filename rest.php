@@ -131,7 +131,7 @@
         $_SESSION['lq'] = time(0)+1;
         $packet = base64_decode($_GET['sendraw']);
         if($socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
-            socket_sendto($socket, $packet, strlen($packet), 0, "127.0.0.1", 8787);
+            socket_sendto($socket, $packet, $_GET['bytes'], 0, "127.0.0.1", 8787);
         $_SESSION['lq'] = time(0)+1;
         exit;
     }
