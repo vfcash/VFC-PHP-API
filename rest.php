@@ -25,15 +25,6 @@
         exit;
     }
 
-    //Get all transactions for an address
-    if(isset($_GET['all']))
-    {
-        $_SESSION['lq'] = time(0)+16;
-        echo '<pre>'.rtrim(shell_exec('/usr/bin/vfc all ' . escapeshellarg($_GET['all'])));
-        $_SESSION['lq'] = time(0)+16;
-        exit;
-    }
-
     if(isset($_GET['difficulty']))
     {
         $_SESSION['lq'] = time(0)+3;
@@ -144,12 +135,17 @@
         exit;
     }
     //Receive raw packet data encoded in base64, for receiving securely signed transactions
-    if(isset($_GET['sendraw']))
+    if(isset($_GET['stp64']))
     {
         $_SESSION['lq'] = time(0)+1;
-        $packet = base64_decode($_GET['sendraw']);
+        $packet = base64_decode($_GET['stp64']);
         if($socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
-            socket_sendto($socket, $packet, $_GET['bytes'], 0, "127.0.0.1", 8787);
+        {
+            socket_sendto($socket, $packet, 147, 0, "127.0.0.1", 8787);
+            echo "1";
+        }
+        else
+            echo "0";
         $_SESSION['lq'] = time(0)+1;
         exit;
     }
@@ -157,7 +153,7 @@
     if(isset($_GET['uid']))
     {
         $_SESSION['lq'] = time(0)+1;
-        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['uid']) . ' GHSH'), "\n");;
+        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['uid']) . ' GHSH'), "\n");
         $_SESSION['lq'] = time(0)+1;
         exit;
     }
@@ -219,6 +215,15 @@
     {
         $_SESSION['lq'] = time(0)+16;
         echo rtrim(shell_exec('/usr/bin/vfc circulating'));
+        $_SESSION['lq'] = time(0)+16;
+        exit;
+    }
+
+    //Get all transactions for an address
+    if(isset($_GET['all']))
+    {
+        $_SESSION['lq'] = time(0)+16;
+        echo '<pre>'.rtrim(shell_exec('/usr/bin/vfc all ' . escapeshellarg($_GET['all'])));
         $_SESSION['lq'] = time(0)+16;
         exit;
     }
