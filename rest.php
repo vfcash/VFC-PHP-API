@@ -144,6 +144,14 @@
         $_SESSION['lq'] = time(0)+1;
         exit;
     }
+    //Get transaction hash
+    if(isset($_GET['uid']))
+    {
+        $_SESSION['lq'] = time(0)+1;
+        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['uid']) . ' GHSH'), "\n");;
+        $_SESSION['lq'] = time(0)+1;
+        exit;
+    }
 
     //Make Transaction
     if(isset($_GET['frompriv']))
