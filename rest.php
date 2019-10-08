@@ -134,6 +134,15 @@
         exit;
     }
 
+    //Receive raw transaction packet data encoded in base58, for receiving securely signed transactions
+    if(isset($_GET['stp']))
+    {
+        $_SESSION['lq'] = time(0)+1;
+        shell_exec('/usr/bin/vfc stp ' . escapeshellarg($_GET['stp']));
+        //exec('nohup /usr/bin/vfc stp ' . escapeshellarg($_GET['stp']) . ' > /dev/null 2>&1 &');
+        $_SESSION['lq'] = time(0)+1;
+        exit;
+    }
     //Receive raw packet data encoded in base64, for receiving securely signed transactions
     if(isset($_GET['sendraw']))
     {
