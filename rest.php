@@ -28,7 +28,7 @@
     if(isset($_GET['difficulty']))
     {
         $_SESSION['lq'] = time(0)+3;
-        echo str_replace("Difficulty: ", "", strstr(rtrim(shell_exec('/usr/bin/vfc difficulty')), "Difficulty: "));
+        echo explode("\n", str_replace("Difficulty: ", "", strstr(rtrim(shell_exec('/usr/bin/vfc difficulty')), "Difficulty: ")), 2)[0];
         $_SESSION['lq'] = time(0)+3;
         exit;
     }
@@ -119,25 +119,25 @@
     //Make Transaction Fast
     if(isset($_GET['fromprivfast']))
     {
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+12;
         exec('nohup /usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['fromprivfast']) . ' > /dev/null 2>&1 &');
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+12;
         exit;
     }
 
     //Receive raw transaction packet data encoded in base58, for receiving securely signed transactions
     if(isset($_GET['stp']))
     {
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+6;
         shell_exec('/usr/bin/vfc stp ' . escapeshellarg($_GET['stp']));
         //exec('nohup /usr/bin/vfc stp ' . escapeshellarg($_GET['stp']) . ' > /dev/null 2>&1 &');
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+6;
         exit;
     }
     //Receive raw packet data encoded in base64, for receiving securely signed transactions
     if(isset($_GET['stp64']))
     {
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+6;
         $packet = base64_decode($_GET['stp64']);
         if($socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
         {
@@ -146,7 +146,7 @@
         }
         else
             echo "0";
-        $_SESSION['lq'] = time(0)+1;
+        $_SESSION['lq'] = time(0)+6;
         exit;
     }
     //Get transaction hash
@@ -161,10 +161,10 @@
     //Make Transaction
     if(isset($_GET['frompriv']))
     {
-        $_SESSION['lq'] = time(0)+3;
+        $_SESSION['lq'] = time(0)+12;
         $frompub = getPublicKey($_GET['frompriv']);
         echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['frompriv']));
-        $_SESSION['lq'] = time(0)+3;
+        $_SESSION['lq'] = time(0)+12;
         exit;
     }
 
