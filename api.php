@@ -15,6 +15,7 @@
             $p = str_replace("Final Balance: ", "", $p);
             return explode(" ", $p, 2)[0];
         }
+        return 'invalid address';
     }
 
     //Get public key from private key
