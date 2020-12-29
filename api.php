@@ -7,10 +7,14 @@
     //get the balance of a public key / address
     function getBalance($public_key)
     {
-        $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
-        $p = strstr($na, "Final Balance: ");
-        $p = str_replace("Final Balance: ", "", $p);
-        return explode(" ", $p, 2)[0];
+        $public_key = str_replace(' ', '', $public_key);
+        if(strlen($public_key) > 12)
+        {
+            $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
+            $p = strstr($na, "Final Balance: ");
+            $p = str_replace("Final Balance: ", "", $p);
+            return explode(" ", $p, 2)[0];
+        }
     }
 
     //Get public key from private key
