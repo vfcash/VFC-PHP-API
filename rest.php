@@ -26,6 +26,7 @@
             $p = str_replace("Final Balance: ", "", $p);
             return explode(" ", $p, 2)[0];
         }
+        return 'invalid address';
     }
 
     if(isset($_GET['balance']))
