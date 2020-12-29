@@ -1,5 +1,7 @@
 <?php
 
+    error_reporting(E_ALL & ~E_NOTICE);
+
     //Start a session
     session_start();
 
@@ -14,13 +16,22 @@
 
     header("Access-Control-Allow-Origin: *");
 
+    function getBalance($public_key)
+    {
+        $public_key = str_replace(' ', '', $public_key);
+        if(strlen($public_key) > 12)
+        {
+            $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
+            $p = strstr($na, "Final Balance: ");
+            $p = str_replace("Final Balance: ", "", $p);
+            return explode(" ", $p, 2)[0];
+        }
+    }
+
     if(isset($_GET['balance']))
     {
         $_SESSION['lq'] = time()+3;
-        $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($_GET['balance']));
-        $p = strstr($na, "Final Balance: ");
-        $p = str_replace("Final Balance: ", "", $p);
-        echo explode(" ", $p, 2)[0];
+        echo getBalance($_GET['balance']);
         $_SESSION['lq'] = time()+3;
         exit;
     }
@@ -91,14 +102,6 @@
         echo $out;
         $_SESSION['lq'] = time()+16;
         exit;
-    }
-
-    function getBalance($public_key)
-    {
-        $na = shell_exec('/usr/bin/vfc ' . escapeshellarg($public_key));
-        $p = strstr($na, "Final Balance: ");
-        $p = str_replace("Final Balance: ", "", $p);
-        return explode(" ", $p, 2)[0];
     }
 
     function getPublicKey($private_key)
