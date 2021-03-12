@@ -1,10 +1,16 @@
 <?php
 
-    //VF Cash PHP API v0.05
+    // VF Cash PHP API v0.05
 
-    //Before you can use this basic API you need to be running a local instance of the VFC node
+    // Before you can use this basic API you need to be running a local instance of the VFC node
 
-    //get the balance of a public key / address
+    // sanitise input key / address
+    function hashSanity($hash)
+    {
+        return str_replace('O', '', str_replace('0', '', str_replace('l', '', preg_replace("/[^A-Za-z0-9]/", '', $hash))));
+    }
+
+    // Get the balance of a public key / address
     function getBalance($public_key)
     {
         $public_key = str_replace(' ', '', $public_key);
@@ -18,7 +24,7 @@
         return 'invalid address';
     }
 
-    //Get public key from private key
+    // Get public key from private key
     function getPublicKey($private_key)
     {
         $na = shell_exec('/usr/bin/vfc getpub ' . escapeshellarg($private_key));
@@ -27,19 +33,19 @@
         return explode("\n", $p, 2)[0];
     }
 
-    //Make Transaction
+    // Make Transaction
     function makeTransaction($from_pub_key, $to_pub_key, $amount, $from_priv_key)
     {
         shell_exec('/usr/bin/vfc ' . escapeshellarg($from_pub_key) . ' ' . escapeshellarg($to_pub_key) . ' ' . escapeshellarg($amount) . ' ' . escapeshellarg($from_priv_key));
     }
 
-    //Get maximum supply
+    // Get maximum supply
     function getMaxSupply()
     {
         return 4294967295;
     }
 
-    //Get circulating supply
+    // Get circulating supply
     function circulatingSupply()
     {
         $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg("foxXshGUtLFD24G9pz48hRh3LWM58GXPYiRhNHUyZAPJ"));
@@ -57,7 +63,7 @@
         return number_format($sp);
     }
 
-    //Print a fresh/new key pair
+    // Print a fresh/new key pair
     function printKeyPair()
     {
         $na = shell_exec('/usr/bin/vfc new');
@@ -73,7 +79,7 @@
         echo "<br><b>We have generated for you a new public and private key that can be used as a fresh account key-pair to transfer VFC assets to under your control.</b><br><br><b>Public Key</b><br><a href=\"#conv\">" . $public . "</a><br><br><b>Private Key</b> (KEEP PRIVATE, DO NOT SHARE)<br><a href=\"#conv\">" . $private . "</a><br><br>Please save these account details as these private and public keys are your only way of authorising actions on your VFC asset.";
     }
 
-    //Print Received Transactions for Public Key / Address
+    // Print Received Transactions for Public Key / Address
     function printIns($public_key)
     {
         $na = shell_exec('/usr/bin/vfc in ' . escapeshellarg($public_key));
@@ -89,7 +95,7 @@
         }
     }
 
-    //Print Sent Transactions for Public Key / Address
+    // Print Sent Transactions for Public Key / Address
     function printOuts($public_key)
     {
         $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg($public_key));
