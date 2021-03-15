@@ -4,10 +4,16 @@
 
     // Before you can use this basic API you need to be running a local instance of the VFC node
 
-    // sanitise input key / address
+    // helper functions
     function hashSanity($hash)
     {
         return str_replace('O', '', str_replace('0', '', str_replace('l', '', preg_replace("/[^A-Za-z0-9]/", '', $hash))));
+    }
+    function isBase58($key)
+    {
+        if(ctype_alnum($key) === false || strpos($key, "O") !== false || strpos($key, "0") !== false || strpos($key, "l") !== false)
+            return false;
+        return true;
     }
 
     // Get the balance of a public key / address
