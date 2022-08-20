@@ -5,6 +5,23 @@
     //Start a session
     session_start();
 
+    function hashSanity($hash)
+    {
+        return str_replace('O', '', str_replace('0', '', str_replace('l', '', preg_replace("/[^A-Za-z0-9]/", '', $hash))));
+    }
+
+    function strSanity($str)
+    {
+        return preg_replace("/[^A-Za-z0-9 ]/", '', $str);
+    }
+
+    function isBase58($key)
+    {
+        if(ctype_alnum($key) === false || strpos($key, "O") !== false || strpos($key, "0") !== false || strpos($key, "l") !== false)
+            return false;
+        return true;
+    }
+
     if(isset($_SESSION['lq']))
     {
         if(time() < $_SESSION['lq'])
@@ -32,7 +49,7 @@
     if(isset($_GET['balance']))
     {
         $_SESSION['lq'] = time()+3;
-        echo getBalance($_GET['balance']);
+        echo getBalance(hashSanity($_GET['balance']));
         $_SESSION['lq'] = time()+3;
         exit;
     }
@@ -48,7 +65,7 @@
     if(isset($_GET['findtrans']))
     {
         $_SESSION['lq'] = time()+16;
-        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg($_GET['findtrans']));
+        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg(hashSanity($_GET['findtrans'])));
         echo $na;
         $_SESSION['lq'] = time()+16;
         exit;
@@ -56,7 +73,7 @@
     if(isset($_GET['findtransjson']))
     {
         $_SESSION['lq'] = time()+16;
-        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg($_GET['findtransjson']));
+        $na = shell_exec('/usr/bin/vfc findtrans ' . escapeshellarg(hashSanity($_GET['findtransjson'])));
         $p = explode(',', $na);
         echo '{"offset":'.$p[0].',"uid":'.$p[1].',"from":"'.$p[2].'","to":"'.$p[3].'","sig":"'.$p[4].'","amount":'.rtrim($p[5]).'}';
         $_SESSION['lq'] = time()+16;
@@ -68,7 +85,7 @@
     {
         $_SESSION['lq'] = time()+16;
         $out = '{"sent_transactions":[';
-        $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg($_GET['sent_transactions']));
+        $na = shell_exec('/usr/bin/vfc out ' . escapeshellarg(hashSanity($_GET['sent_transactions'])));
         $p = explode("\n", $na);
         foreach($p as $pc)
         {
@@ -89,7 +106,7 @@
     {
         $_SESSION['lq'] = time()+16;
         $out = '{"received_transactions":[';
-        $na = shell_exec('/usr/bin/vfc in ' . escapeshellarg($_GET['received_transactions']));
+        $na = shell_exec('/usr/bin/vfc in ' . escapeshellarg(hashSanity($_GET['received_transactions'])));
         $p = explode("\n", $na);
         foreach($p as $pc)
         {
@@ -116,7 +133,7 @@
     //Get public key from private key
     if(isset($_GET['getpubkey']))
     {
-        echo getPublicKey($_GET['getpubkey']);
+        echo getPublicKey(hashSanity($_GET['getpubkey']));
         exit;
     }
 
@@ -124,7 +141,7 @@
     if(isset($_GET['fromprivfast']))
     {
         $_SESSION['lq'] = time()+12;
-        exec('nohup /usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['fromprivfast']) . ' > /dev/null 2>&1 &');
+        exec('nohup /usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSantity($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['fromprivfast'])) . ' > /dev/null 2>&1 &');
         $_SESSION['lq'] = time()+12;
         exit;
     }
@@ -132,6 +149,8 @@
     //Receive raw transaction packet data encoded in base58, for receiving securely signed transactions
     if(isset($_GET['stp']))
     {
+        if(isBase58($_GET['stp']) == false)
+            exit;
         $_SESSION['lq'] = time()+6;
         shell_exec('/usr/bin/vfc stp ' . escapeshellarg($_GET['stp']));
         //exec('nohup /usr/bin/vfc stp ' . escapeshellarg($_GET['stp']) . ' > /dev/null 2>&1 &');
@@ -157,7 +176,7 @@
     if(isset($_GET['uid']))
     {
         $_SESSION['lq'] = time()+1;
-        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg($_GET['frompub']) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['uid']) . ' GHSH'), "\n");
+        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSanity($_GET['amount'])) . ' ' . escapeshellarg(strSanity($_GET['uid'])) . ' GHSH'), "\n");
         $_SESSION['lq'] = time()+1;
         exit;
     }
@@ -166,8 +185,8 @@
     if(isset($_GET['frompriv']))
     {
         $_SESSION['lq'] = time()+12;
-        $frompub = getPublicKey($_GET['frompriv']);
-        echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg($_GET['topub']) . ' ' . escapeshellarg($_GET['amount']) . ' ' . escapeshellarg($_GET['frompriv']));
+        $frompub = getPublicKey(hashSanity($_GET['frompriv']));
+        echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSanity($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['frompriv'])));
         $_SESSION['lq'] = time()+12;
         exit;
     }
@@ -227,7 +246,7 @@
     if(isset($_GET['all']))
     {
         $_SESSION['lq'] = time()+16;
-        echo '<pre>'.rtrim(shell_exec('/usr/bin/vfc all ' . escapeshellarg($_GET['all'])));
+        echo '<pre>'.rtrim(shell_exec('/usr/bin/vfc all ' . escapeshellarg(hashSanity($_GET['all']))));
         $_SESSION['lq'] = time()+16;
         exit;
     }
@@ -236,7 +255,7 @@
     if(isset($_GET['mnemonic']))
     {
         $_SESSION['lq'] = time()+3;
-        $na = shell_exec('/usr/bin/vfc new ' . escapeshellarg(urldecode($_GET['mnemonic'])));
+        $na = shell_exec('/usr/bin/vfc new ' . escapeshellarg(strSanity(urldecode($_GET['mnemonic']))));
         $p = strstr($na, "Public: ");
         $p = str_replace('Public: ', '', $p);
         $public = explode("\n", $p, 2)[0];
