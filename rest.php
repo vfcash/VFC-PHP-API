@@ -141,7 +141,7 @@
     if(isset($_GET['fromprivfast']))
     {
         $_SESSION['lq'] = time()+12;
-        exec('nohup /usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSantity($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['fromprivfast'])) . ' > /dev/null 2>&1 &');
+        exec('nohup /usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(floatval($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['fromprivfast'])) . ' > /dev/null 2>&1 &');
         $_SESSION['lq'] = time()+12;
         exit;
     }
@@ -176,7 +176,7 @@
     if(isset($_GET['uid']))
     {
         $_SESSION['lq'] = time()+1;
-        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSanity($_GET['amount'])) . ' ' . escapeshellarg(strSanity($_GET['uid'])) . ' GHSH'), "\n");
+        echo rtrim(shell_exec('/usr/bin/vfc ' . escapeshellarg(hashSanity($_GET['frompub'])) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(floatval($_GET['amount'])) . ' ' . escapeshellarg(strSanity($_GET['uid'])) . ' GHSH'), "\n");
         $_SESSION['lq'] = time()+1;
         exit;
     }
@@ -186,7 +186,7 @@
     {
         $_SESSION['lq'] = time()+12;
         $frompub = getPublicKey(hashSanity($_GET['frompriv']));
-        echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(strSanity($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['frompriv'])));
+        echo "<pre>" . shell_exec('/usr/bin/vfc ' . escapeshellarg($frompub) . ' ' . escapeshellarg(hashSanity($_GET['topub'])) . ' ' . escapeshellarg(floatval($_GET['amount'])) . ' ' . escapeshellarg(hashSanity($_GET['frompriv'])));
         $_SESSION['lq'] = time()+12;
         exit;
     }
